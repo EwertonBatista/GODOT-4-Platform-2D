@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://nv6yuj4b1vhf"]
+[gd_scene load_steps=18 format=3 uid="uid://nv6yuj4b1vhf"]
 
 [ext_resource type="Script" path="res://scripts/world_01.gd" id="1_dxmcr"]
 [ext_resource type="PackedScene" uid="uid://b0gi1no6nxsjr" path="res://prefabs/coin.tscn" id="1_j0k82"]
@@ -213,9 +213,6 @@ sources/1 = SubResource("TileSetAtlasSource_aarvo")
 shader = ExtResource("6_b8dwq")
 shader_parameter/move_speed = 0.03
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_mnure"]
-size = Vector2(67, 12)
-
 [node name="World-01" type="Node2D"]
 script = ExtResource("1_dxmcr")
 
@@ -255,7 +252,7 @@ position = Vector2(481, -66)
 position = Vector2(427, -66)
 
 [node name="moving_platform" parent="." instance=ExtResource("10_cwbl5")]
-position = Vector2(51, 15)
+position = Vector2(54, 34)
 move_horizontal = false
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -323,7 +320,7 @@ texture = ExtResource("8_ywrdb")
 centered = false
 
 [node name="Character" parent="." instance=ExtResource("3_krtr1")]
-position = Vector2(203, 20)
+position = Vector2(19, -83)
 
 [node name="enemy" parent="." instance=ExtResource("12_l2d8o")]
 position = Vector2(342, 32)
@@ -337,14 +334,3 @@ drag_horizontal_enabled = true
 drag_left_margin = 0.1
 drag_right_margin = 0.0
 editor_draw_drag_margin = true
-
-[node name="Node2D" type="StaticBody2D" parent="."]
-position = Vector2(293, 10)
-collision_layer = 2
-collision_mask = 4
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D"]
-position = Vector2(-2, -4)
-rotation = -1.57079
-shape = SubResource("RectangleShape2D_mnure")
-debug_color = Color(0.409927, 0.0228829, 0.115098, 0.42)
