@@ -10,7 +10,7 @@ var IS_JUMPING: bool = false;
 var gravity = 1000
 
 @onready var animation = $AnimatedSprite2D as AnimatedSprite2D
-@onready var remote_transform
+@onready var remote_transform := $remote as RemoteTransform2D
 
 
 func _physics_process(delta):
@@ -52,8 +52,10 @@ func _physics_process(delta):
 
 func _on_hurtbox_body_entered(body):
 	if body.is_in_group("enemies"):
-		$Camera2D.reparent(self.get_parent(), true)
+		#$Camera2D.reparent(self.get_parent(), true)
 		queue_free()
 
 func follow_camera(camera):
 	var camera_path = camera.get_path()
+	remote_transform.remote_path = camera_path
+	
