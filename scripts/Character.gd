@@ -45,8 +45,10 @@ func _physics_process(delta):
 
 	if Input.is_action_pressed("correr"):
 		SPEED = move_toward(SPEED, MAX_SPEED, int(SPEED * delta))
+		animation.speed_scale = 2
 	else:
 		SPEED = 100
+		animation.speed_scale = 1
 	move_and_slide()
 
 
