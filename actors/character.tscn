@@ -76,7 +76,7 @@ animations = [{
 }]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_st4gf"]
-size = Vector2(22, 12)
+size = Vector2(20, 12)
 
 [node name="Character" type="CharacterBody2D"]
 position = Vector2(319, -7)
@@ -107,11 +107,15 @@ debug_color = Color(0.68896, 1.12626e-05, 0.470315, 0.42)
 [node name="remote" type="RemoteTransform2D" parent="."]
 
 [node name="ray_right" type="RayCast2D" parent="."]
-position = Vector2(8, 0)
+position = Vector2(8, 3)
 target_position = Vector2(4, 0)
+collision_mask = 4
+hit_from_inside = true
 
 [node name="ray_left" type="RayCast2D" parent="."]
-position = Vector2(-8, 0)
+position = Vector2(-8, 3)
 target_position = Vector2(-4, 0)
+collision_mask = 4
+hit_from_inside = true
 
 [connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]
