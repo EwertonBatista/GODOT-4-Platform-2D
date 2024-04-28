@@ -7,13 +7,16 @@ extends CharacterBody2D
 @onready var remote_transform := $remote as RemoteTransform2D
 @onready var ray_right := $ray_right as RayCast2D
 @onready var ray_left := $ray_left as RayCast2D
+@onready var timer := $Timer as Timer
 
 @export var player_life := 10
 
 var MAX_SPEED: int = 200
-var IS_JUMPING: bool = false;
+var IS_JUMPING: bool = false
 var gravity = 1000
 var knockback_vector := Vector2.ZERO
+var is_hurted := false
+var direction
 
 
 func _physics_process(delta):
@@ -33,18 +36,18 @@ func _physics_process(delta):
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
-	var direction = Input.get_axis("ui_left", "ui_right")
+	direction = Input.get_axis("ui_left", "ui_right")
 	if direction:
 		velocity.x = direction * SPEED
 		animation.scale.x = direction
-		if !IS_JUMPING:
-			animation.play("run")
-	elif IS_JUMPING:
-		animation.play("jump")
+		#if !IS_JUMPING:
+			#animation.play("run")
+	#elif IS_JUMPING:
+		#animation.play("jump")
 
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
-		animation.play("idle")
+		#animation.play("idle")
 		
 	if knockback_vector != Vector2.ZERO:
 		velocity = knockback_vector
@@ -55,11 +58,14 @@ func _physics_process(delta):
 	else:
 		SPEED = 100
 		animation.speed_scale = 1
+		
+	_set_state()
 	move_and_slide()
 
 
 func _on_hurtbox_body_entered(body):
 	if body.is_in_group("enemies"):
+		
 		##$Camera2D.reparent(self.get_parent(), true)
 		if player_life < 0:
 			queue_free()
@@ -85,3 +91,23 @@ func take_damage(knockback_force := Vector2.ZERO, duration := 0.25):
 		knockback_tween.parallel().tween_property(self, "knockback_vector", Vector2.ZERO, duration)
 		animation.modulate = Color(1,0,0,1)
 		knockback_tween.parallel().tween_property(animation, "modulate", Color(1,1,1,1), duration)
+	is_hurted = true
+	timer.start(.3)
+
+func _set_state():
+	var state = "idle"
+	
+	if !is_on_floor():
+		state = "jump"
+	elif direction != 0:
+		state = "run"
+		
+	if is_hurted:
+		state = "hurt"
+	
+	if animation.name != state:
+		animation.play(state)
+
+func _on_timer_timeout():
+	print("Timer acabou")
+	is_hurted = false;
