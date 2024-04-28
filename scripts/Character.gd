@@ -55,8 +55,6 @@ func _physics_process(delta):
 	else:
 		SPEED = 100
 		animation.speed_scale = 1
-	print("DIREITA ESTA COLIDINDO ",ray_right.is_colliding())
-	print("ESQUERDA ESTA COLIDINDO ",ray_left.is_colliding())
 	move_and_slide()
 
 
@@ -84,4 +82,6 @@ func take_damage(knockback_force := Vector2.ZERO, duration := 0.25):
 	if knockback_force != Vector2.ZERO:
 		knockback_vector = knockback_force
 		var knockback_tween = get_tree().create_tween()
-		knockback_tween.tween_property(self, "knockback_vector", Vector2.ZERO, duration)
+		knockback_tween.parallel().tween_property(self, "knockback_vector", Vector2.ZERO, duration)
+		animation.modulate = Color(1,0,0,1)
+		knockback_tween.parallel().tween_property(animation, "modulate", Color(1,1,1,1), duration)
