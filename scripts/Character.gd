@@ -119,6 +119,7 @@ func _on_head_collider_body_entered(body):
 		if body.hitpoints < 1:			
 			body.break_sprite()
 		else:
+			body.create_coin()
 			body.animation_player.play("hit")
 
 
