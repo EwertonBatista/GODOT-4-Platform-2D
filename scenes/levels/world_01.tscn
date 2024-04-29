@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://nv6yuj4b1vhf"]
+[gd_scene load_steps=25 format=3 uid="uid://nv6yuj4b1vhf"]
 
 [ext_resource type="Script" path="res://scripts/world_01.gd" id="1_dxmcr"]
 [ext_resource type="PackedScene" uid="uid://b0gi1no6nxsjr" path="res://prefabs/coin.tscn" id="1_j0k82"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://bck2xtdgk0y5n" path="res://assets/mini_ui_buttons/ui_buttons_arrow_right_PRESSED.png" id="17_7104r"]
 [ext_resource type="Texture2D" uid="uid://bnvy7trsjs1gn" path="res://assets/mini_ui_buttons/ui_buttons_arrow_up_NORMAL.png" id="18_oj2yg"]
 [ext_resource type="Texture2D" uid="uid://qdnspdqmnng1" path="res://assets/mini_ui_buttons/ui_buttons_arrow_up_PRESSED.png" id="19_uif1g"]
+[ext_resource type="PackedScene" uid="uid://cxcb316gvpdrr" path="res://prefabs/broken_box.tscn" id="20_55q3o"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8ncj4"]
 texture = ExtResource("1_qllun")
@@ -326,7 +327,7 @@ texture = ExtResource("8_ywrdb")
 centered = false
 
 [node name="enemy" parent="." instance=ExtResource("12_l2d8o")]
-position = Vector2(342, 32)
+position = Vector2(480, 32)
 wall_min_slide_angle = 1.69646
 
 [node name="Camera2D" type="Camera2D" parent="."]
@@ -364,3 +365,6 @@ texture_normal = ExtResource("18_oj2yg")
 texture_pressed = ExtResource("19_uif1g")
 action = "ui_accept"
 visibility_mode = 1
+
+[node name="broken_box" parent="." instance=ExtResource("20_55q3o")]
+position = Vector2(329, -9)
