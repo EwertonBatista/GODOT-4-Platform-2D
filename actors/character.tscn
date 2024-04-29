@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://csxkj6ry6gdof"]
+[gd_scene load_steps=18 format=3 uid="uid://csxkj6ry6gdof"]
 
 [ext_resource type="Script" path="res://scripts/Character.gd" id="1_iunwg"]
 [ext_resource type="Texture2D" uid="uid://cbckl5kqsf0uu" path="res://assets/Sprite Pack 2/2 - Mr. Mochi/Idle (32 x 32).png" id="2_7mwvt"]
@@ -91,9 +91,12 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_st4gf"]
 size = Vector2(20, 12)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3yo4j"]
+size = Vector2(20, 4.5)
+
 [node name="Character" type="CharacterBody2D"]
 position = Vector2(319, -7)
-collision_mask = 30
+collision_mask = 94
 script = ExtResource("1_iunwg")
 
 [node name="Collision" type="CollisionShape2D" parent="."]
@@ -135,5 +138,14 @@ hit_from_inside = true
 wait_time = 0.03
 one_shot = true
 
+[node name="head_collider" type="Area2D" parent="."]
+position = Vector2(-19, -13)
+collision_mask = 65
+
+[node name="head_collision" type="CollisionShape2D" parent="head_collider"]
+position = Vector2(19, 3)
+shape = SubResource("RectangleShape2D_3yo4j")
+
 [connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="head_collider" to="." method="_on_head_collider_body_entered"]
