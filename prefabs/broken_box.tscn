@@ -88,3 +88,6 @@ debug_color = Color(0.9311, 2.71457e-05, 0.654129, 0.42)
 libraries = {
 "": SubResource("AnimationLibrary_cgip0")
 }
+
+[node name="spawn_point" type="Marker2D" parent="."]
+position = Vector2(0, -8)
