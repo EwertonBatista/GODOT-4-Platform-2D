@@ -40,10 +40,6 @@ func _physics_process(delta):
 	if direction:
 		velocity.x = direction * SPEED
 		animation.scale.x = direction
-		#if !IS_JUMPING:
-			#animation.play("run")
-	#elif IS_JUMPING:
-		#animation.play("jump")
 
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -70,26 +66,22 @@ func _physics_process(delta):
 
 func _on_hurtbox_body_entered(body):
 	if body.is_in_group("enemies"):
-		
-		##$Camera2D.reparent(self.get_parent(), true)
-		if player_life < 0:
-			queue_free()
-		else:
-			print("Inimigo")
-			if ray_right.is_colliding():
-				print("DIREITA")
-				take_damage(Vector2(-200, -200))
-			if ray_left.is_colliding():
-				print("ESQUERDA")				
-				take_damage(Vector2(200, -200))
+		print("Inimigo")
+		if ray_right.is_colliding():
+			take_damage(Vector2(-200, -200))
+		if ray_left.is_colliding():
+			take_damage(Vector2(200, -200))
 
 func follow_camera(camera):
 	var camera_path = camera.get_path()
 	remote_transform.remote_path = camera_path
 
 func take_damage(knockback_force := Vector2.ZERO, duration := 0.25):
-	player_life -= 1
 	
+	if player_life > 0:
+		player_life -= 1
+	else:
+		queue_free()
 	if knockback_force != Vector2.ZERO:
 		knockback_vector = knockback_force
 		var knockback_tween = get_tree().create_tween()
@@ -106,17 +98,13 @@ func _set_state():
 		state = "jump"
 	elif direction != 0:
 		state = "run"
-		
 	if is_hurted:
 		state = "hurt"
-	
 	if animation.name != state:
 		animation.play(state)
 
 func _on_timer_timeout():
-	print("Timer acabou")
 	is_hurted = false;
-
 
 func _on_head_collider_body_entered(body):
 	if body.has_method("break_sprite"):
