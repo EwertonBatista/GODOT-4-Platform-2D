@@ -92,7 +92,7 @@ animations = [{
 size = Vector2(20, 12)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3yo4j"]
-size = Vector2(20, 4.5)
+size = Vector2(12, 4.5)
 
 [node name="Character" type="CharacterBody2D"]
 position = Vector2(319, -7)
@@ -143,7 +143,7 @@ position = Vector2(-19, -13)
 collision_mask = 65
 
 [node name="head_collision" type="CollisionShape2D" parent="head_collider"]
-position = Vector2(19, 3)
+position = Vector2(19, 4)
 shape = SubResource("RectangleShape2D_3yo4j")
 
 [connection signal="body_entered" from="hurtbox" to="." method="_on_hurtbox_body_entered"]
