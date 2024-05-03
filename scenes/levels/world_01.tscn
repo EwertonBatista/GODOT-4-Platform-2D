@@ -1,15 +1,17 @@
-[gd_scene load_steps=32 format=3 uid="uid://nv6yuj4b1vhf"]
+[gd_scene load_steps=40 format=3 uid="uid://nv6yuj4b1vhf"]
 
 [ext_resource type="Script" path="res://scripts/world_01.gd" id="1_dxmcr"]
 [ext_resource type="PackedScene" uid="uid://b0gi1no6nxsjr" path="res://prefabs/coin.tscn" id="1_j0k82"]
 [ext_resource type="Texture2D" uid="uid://gs1i8eham1g4" path="res://assets/Seasonal Tilesets/1 - Grassland/Terrain (16 x 16).png" id="1_qllun"]
 [ext_resource type="Texture2D" uid="uid://b4yvryc3ymmgq" path="res://assets/Seasonal Tilesets/1 - Grassland/Grassland_entities (16 x 16).png" id="2_lstjf"]
+[ext_resource type="Script" path="res://scripts/hud_manager.gd" id="2_wo566"]
 [ext_resource type="PackedScene" uid="uid://csxkj6ry6gdof" path="res://actors/character.tscn" id="3_krtr1"]
 [ext_resource type="Texture2D" uid="uid://d33r1q5rrfc2f" path="res://assets/Seasonal Tilesets/1 - Grassland/Background parts/5 - Sky_color.png" id="4_pkl8j"]
 [ext_resource type="Texture2D" uid="uid://cswtklqxq28ob" path="res://assets/Seasonal Tilesets/1 - Grassland/Background parts/4 - Cloud_cover_2.png" id="5_yptnr"]
 [ext_resource type="Shader" path="res://shaders/world_01.gdshader" id="6_b8dwq"]
 [ext_resource type="Texture2D" uid="uid://bsmdj3ts88ejl" path="res://assets/Seasonal Tilesets/1 - Grassland/Background parts/3 - Cloud_cover_1.png" id="6_vbtb1"]
 [ext_resource type="Texture2D" uid="uid://b1pxssotbw86j" path="res://assets/Seasonal Tilesets/1 - Grassland/Background parts/2 - Hills.png" id="7_0ircw"]
+[ext_resource type="Texture2D" uid="uid://bb4phb6y8bnbs" path="res://assets/Mini FX, Items & UI/Mini UI/Life-Counter-Icon.png" id="7_nxen6"]
 [ext_resource type="Texture2D" uid="uid://cednqs4d37rf0" path="res://assets/Seasonal Tilesets/1 - Grassland/Background parts/1 - Foreground_scenery.png" id="8_ywrdb"]
 [ext_resource type="PackedScene" uid="uid://b4h3tw6elt0k1" path="res://prefabs/node_2d.tscn" id="10_cwbl5"]
 [ext_resource type="PackedScene" uid="uid://dgvtloa6kecgl" path="res://actors/enemy.tscn" id="12_l2d8o"]
@@ -25,6 +27,22 @@
 [ext_resource type="Texture2D" uid="uid://cxrqexta2d7d1" path="res://assets/Mini FX, Items & UI/Mini UI/Speech_Emotes (16 x 16).png" id="24_trxx0"]
 [ext_resource type="Script" path="res://scripts/spike_area.gd" id="25_4herj"]
 [ext_resource type="Texture2D" uid="uid://dmexuvwhb0lm7" path="res://assets/Seasonal Tilesets/5 - Misc. universal tiles/Spike.png" id="26_n7yb5"]
+[ext_resource type="Texture2D" uid="uid://dgfvrh8yg3sch" path="res://assets/Mini FX, Items & UI/Common Pick-ups/Coin-Sprites/00_Coin-Sprites.png" id="26_y730t"]
+[ext_resource type="Texture2D" uid="uid://byt5ar30rr4lk" path="res://assets/Mini FX, Items & UI/Common Pick-ups/Coin-Sprites/01_Coin-Sprites.png" id="27_twkpn"]
+[ext_resource type="Texture2D" uid="uid://dn4vcy65s8hmt" path="res://assets/Mini FX, Items & UI/Common Pick-ups/Coin-Sprites/02_Coin-Sprites.png" id="28_c8fgx"]
+[ext_resource type="Texture2D" uid="uid://bstuh08nhmt8u" path="res://assets/Mini FX, Items & UI/Common Pick-ups/Coin-Sprites/03_Coin-Sprites.png" id="29_1sku8"]
+[ext_resource type="FontFile" uid="uid://bie1nalt6w36r" path="res://assets/Fonts/RevMiniPixel.ttf" id="30_v2gnh"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_78by6"]
+frames = 4
+speed_scale = 4.6
+frame_0/texture = ExtResource("26_y730t")
+frame_1/texture = ExtResource("27_twkpn")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("28_c8fgx")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("29_1sku8")
+frame_3/duration = 1.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8ncj4"]
 texture = ExtResource("1_qllun")
@@ -233,6 +251,122 @@ size = Vector2(173, 8)
 [node name="World-01" type="Node2D"]
 script = ExtResource("1_dxmcr")
 
+[node name="HUD" type="CanvasLayer" parent="."]
+
+[node name="control" type="Control" parent="HUD"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_wo566")
+
+[node name="container" type="MarginContainer" parent="HUD/control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="coins_container" type="HBoxContainer" parent="HUD/control/container"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="coins_icon" type="TextureRect" parent="HUD/control/container/coins_container"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = SubResource("AnimatedTexture_78by6")
+
+[node name="coins_counter" type="Label" parent="HUD/control/container/coins_container"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("30_v2gnh")
+theme_override_font_sizes/font_size = 8
+text = "000000"
+vertical_alignment = 1
+
+[node name="score_container" type="HBoxContainer" parent="HUD/control/container"]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 0
+
+[node name="score_label" type="Label" parent="HUD/control/container/score_container"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("30_v2gnh")
+theme_override_font_sizes/font_size = 8
+text = "SCORE:"
+
+[node name="score_counter" type="Label" parent="HUD/control/container/score_container"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("30_v2gnh")
+theme_override_font_sizes/font_size = 8
+text = "0000"
+vertical_alignment = 1
+
+[node name="timer_container" type="HBoxContainer" parent="HUD/control/container"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="timer_counter" type="Label" parent="HUD/control/container/timer_container"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("30_v2gnh")
+theme_override_font_sizes/font_size = 8
+text = "TIME"
+vertical_alignment = 1
+
+[node name="timer_label" type="Label" parent="HUD/control/container/timer_container"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("30_v2gnh")
+theme_override_font_sizes/font_size = 8
+text = "00:00"
+
+[node name="life_container" type="HBoxContainer" parent="HUD/control/container"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+
+[node name="life_icon" type="TextureRect" parent="HUD/control/container/life_container"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("7_nxen6")
+
+[node name="life_separator" type="Label" parent="HUD/control/container/life_container"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("30_v2gnh")
+theme_override_font_sizes/font_size = 8
+text = "X"
+vertical_alignment = 1
+
+[node name="life_counter" type="Label" parent="HUD/control/container/life_container"]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("30_v2gnh")
+theme_override_font_sizes/font_size = 8
+text = "03"
+vertical_alignment = 1
+
 [node name="coins" type="Node2D" parent="."]
 
 [node name="coin" parent="coins" instance=ExtResource("1_j0k82")]
@@ -336,12 +470,8 @@ scale = Vector2(1.5, 1.5)
 texture = ExtResource("8_ywrdb")
 centered = false
 
-[node name="enemy" parent="." instance=ExtResource("12_l2d8o")]
-position = Vector2(480, 32)
-wall_min_slide_angle = 1.69646
-
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(329, 1)
+position = Vector2(327, -69)
 limit_left = 0
 limit_smoothed = true
 position_smoothing_enabled = true
@@ -418,5 +548,32 @@ position = Vector2(761, 25)
 
 [node name="falling_platform3" parent="." instance=ExtResource("22_vd5nq")]
 position = Vector2(644, 25)
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="enemy" parent="Enemies" instance=ExtResource("12_l2d8o")]
+position = Vector2(344, 34)
+wall_min_slide_angle = 1.69646
+enemy_point = 13232
+
+[node name="enemy2" parent="Enemies" instance=ExtResource("12_l2d8o")]
+position = Vector2(73, 35)
+wall_min_slide_angle = 1.69646
+enemy_point = 13232
+
+[node name="enemy3" parent="Enemies" instance=ExtResource("12_l2d8o")]
+position = Vector2(446, -28)
+wall_min_slide_angle = 1.69646
+enemy_point = 13232
+
+[node name="enemy4" parent="Enemies" instance=ExtResource("12_l2d8o")]
+position = Vector2(842, 31)
+wall_min_slide_angle = 1.69646
+enemy_point = 13232
+
+[node name="enemy5" parent="Enemies" instance=ExtResource("12_l2d8o")]
+position = Vector2(544, 12)
+wall_min_slide_angle = 1.69646
+enemy_point = 13232
 
 [connection signal="body_entered" from="spike_area" to="spike_area" method="_on_body_entered"]

@@ -20,7 +20,6 @@
 [ext_resource type="Texture2D" uid="uid://bnvy7trsjs1gn" path="res://assets/mini_ui_buttons/ui_buttons_arrow_up_NORMAL.png" id="18_oj2yg"]
 [ext_resource type="Texture2D" uid="uid://qdnspdqmnng1" path="res://assets/mini_ui_buttons/ui_buttons_arrow_up_PRESSED.png" id="19_uif1g"]
 [ext_resource type="PackedScene" uid="uid://cxcb316gvpdrr" path="res://prefabs/broken_box.tscn" id="20_55q3o"]
-[ext_resource type="PackedScene" uid="uid://du3woucxtrql5" path="res://prefabs/test_platform.tscn" id="21_lhvhd"]
 [ext_resource type="PackedScene" uid="uid://sl3tvayulwhm" path="res://prefabs/falling_platform.tscn" id="22_vd5nq"]
 [ext_resource type="Script" path="res://scripts/warning_sign.gd" id="23_7dx0i"]
 [ext_resource type="Texture2D" uid="uid://cxrqexta2d7d1" path="res://assets/Mini FX, Items & UI/Mini UI/Speech_Emotes (16 x 16).png" id="24_trxx0"]
