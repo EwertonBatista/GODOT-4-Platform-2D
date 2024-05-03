@@ -80,7 +80,6 @@ region_enabled = true
 region_rect = Rect2(16, 16, 16, 16)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("RectangleShape2D_eg2bb")
 debug_color = Color(0.9311, 2.71457e-05, 0.654129, 0.42)
 
