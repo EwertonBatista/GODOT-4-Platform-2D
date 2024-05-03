@@ -5,12 +5,12 @@ extends CharacterBody2D
 @onready var enemy_texture = $texture as Sprite2D
 @onready var anim = $anim as AnimationPlayer
 @export var SPEED = 600.0
+@export var enemy_point := 100
 
 var DIRECTION := -1
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -27,5 +27,5 @@ func _physics_process(delta):
 
 func _on_anim_animation_finished(anim_name):
 	if anim_name == "hurt":
-		print("acabou de tocar hurt")
+		Globals.score += enemy_point
 		queue_free()
