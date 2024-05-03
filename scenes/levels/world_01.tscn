@@ -413,4 +413,10 @@ region_rect = Rect2(0, 8, 176, 8)
 [node name="collision" type="CollisionShape2D" parent="spike_area"]
 shape = SubResource("RectangleShape2D_w3tna")
 
+[node name="falling_platform2" parent="." instance=ExtResource("22_vd5nq")]
+position = Vector2(761, 25)
+
+[node name="falling_platform3" parent="." instance=ExtResource("22_vd5nq")]
+position = Vector2(644, 25)
+
 [connection signal="body_entered" from="spike_area" to="spike_area" method="_on_body_entered"]
