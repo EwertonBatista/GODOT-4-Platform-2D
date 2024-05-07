@@ -57,7 +57,7 @@ func _physics_process(delta):
 	move_and_slide()
 	
 	if(position.y > 300):
-		get_tree().reload_current_scene()
+		Globals.respawn_player()
 	
 	for platforms in get_slide_collision_count():
 		var collision = get_slide_collision(platforms)
