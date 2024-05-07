@@ -1,0 +1,134 @@
+[gd_scene load_steps=15 format=3 uid="uid://cfbhek5liuf55"]
+
+[ext_resource type="Script" path="res://scripts/rocket_cherry.gd" id="1_6faa2"]
+[ext_resource type="Texture2D" uid="uid://t4702h8v7h8t" path="res://assets/Sprite Pack 2/7 - Rocket Cherry/Flying (16 x 32).png" id="1_5768c"]
+[ext_resource type="Texture2D" uid="uid://7ragi12gulc5" path="res://assets/Sprite Pack 2/7 - Rocket Cherry/Hurt_Falling (16 x 32).png" id="2_p2qvk"]
+[ext_resource type="PackedScene" uid="uid://cngk7bj7teyb1" path="res://prefabs/hitbox.tscn" id="3_acgem"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mxnp7"]
+atlas = ExtResource("1_5768c")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8lv73"]
+atlas = ExtResource("1_5768c")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vv84y"]
+atlas = ExtResource("2_p2qvk")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ncd21"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mxnp7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8lv73")
+}],
+"loop": true,
+"name": &"flying",
+"speed": 7.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vv84y")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_s7pru"]
+radius = 6.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ksf0a"]
+size = Vector2(12, 2)
+
+[sub_resource type="Curve2D" id="Curve2D_8dmwd"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, -1, 0, 0, 0, 0, 0, -74)
+}
+point_count = 2
+
+[sub_resource type="Animation" id="Animation_wargh"]
+resource_name = "patrol"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("path2D/pathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_gtj06"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("path2D/pathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6jqdo"]
+_data = {
+"RESET": SubResource("Animation_gtj06"),
+"patrol": SubResource("Animation_wargh")
+}
+
+[node name="base_patrol" type="Node2D"]
+
+[node name="rocket_cherry" type="CharacterBody2D" parent="."]
+position = Vector2(0, -24.3007)
+collision_layer = 4
+script = ExtResource("1_6faa2")
+
+[node name="anim" type="AnimatedSprite2D" parent="rocket_cherry"]
+sprite_frames = SubResource("SpriteFrames_ncd21")
+animation = &"hurt"
+autoplay = "flying"
+
+[node name="collision" type="CollisionShape2D" parent="rocket_cherry"]
+position = Vector2(0, 6)
+shape = SubResource("CircleShape2D_s7pru")
+
+[node name="hitbox" parent="rocket_cherry" instance=ExtResource("3_acgem")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="rocket_cherry/hitbox"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_ksf0a")
+debug_color = Color(0.974993, 0, 0.4227, 0.42)
+
+[node name="path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_8dmwd")
+
+[node name="pathFollow2D" type="PathFollow2D" parent="path2D"]
+position = Vector2(0, -24.3007)
+progress = 23.3038
+rotates = false
+
+[node name="remote" type="RemoteTransform2D" parent="path2D/pathFollow2D"]
+remote_path = NodePath("../../../rocket_cherry")
+
+[node name="spawn_enemy" type="Marker2D" parent="."]
+
+[node name="anim" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6jqdo")
+}
+autoplay = "patrol"
+speed_scale = 0.5
+
+[connection signal="body_entered" from="rocket_cherry/hitbox" to="rocket_cherry" method="_on_hitbox_body_entered"]

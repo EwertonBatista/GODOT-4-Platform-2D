@@ -1,0 +1,67 @@
+[gd_scene load_steps=11 format=3 uid="uid://cnhom6dxwk3nh"]
+
+[ext_resource type="Script" path="res://scripts/cherry.gd" id="1_6lkh7"]
+[ext_resource type="Texture2D" uid="uid://drwp1675ft8a8" path="res://assets/Sprite Pack 2/7 - Rocket Cherry/Hopping (16 x 32).png" id="1_phss3"]
+[ext_resource type="PackedScene" uid="uid://cngk7bj7teyb1" path="res://prefabs/hitbox.tscn" id="2_2twr1"]
+[ext_resource type="Texture2D" uid="uid://dfm1itmdwdqci" path="res://assets/Sprite Pack 2/7 - Rocket Cherry/Hurt (16 x 32).png" id="2_jfqib"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lrfvg"]
+atlas = ExtResource("2_jfqib")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_auatt"]
+atlas = ExtResource("1_phss3")
+region = Rect2(0, 0, 16, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_punhm"]
+atlas = ExtResource("1_phss3")
+region = Rect2(16, 0, 16, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8l063"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lrfvg")
+}],
+"loop": false,
+"name": &"hurt",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_auatt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_punhm")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 3.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dt6bt"]
+radius = 6.08276
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fn6fu"]
+size = Vector2(14, 3)
+
+[node name="cherry" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_6lkh7")
+
+[node name="anim" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_8l063")
+animation = &"hurt"
+autoplay = "walk"
+
+[node name="collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9)
+shape = SubResource("CircleShape2D_dt6bt")
+
+[node name="hitbox" parent="." instance=ExtResource("2_2twr1")]
+
+[node name="collision" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_fn6fu")
+debug_color = Color(0.965552, 0.0237287, 0.471655, 0.42)
