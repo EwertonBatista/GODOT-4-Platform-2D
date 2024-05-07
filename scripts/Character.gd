@@ -9,8 +9,6 @@ extends CharacterBody2D
 @onready var ray_left := $ray_left as RayCast2D
 @onready var timer := $Timer as Timer
 
-@export var player_life := 10
-
 var MAX_SPEED: int = 200
 var IS_JUMPING: bool = false
 var gravity = 1000
@@ -18,6 +16,7 @@ var knockback_vector := Vector2.ZERO
 var is_hurted := false
 var direction
 
+signal player_has_died()
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -57,12 +56,14 @@ func _physics_process(delta):
 	_set_state()
 	move_and_slide()
 	
+	if(position.y > 300):
+		get_tree().reload_current_scene()
+	
 	for platforms in get_slide_collision_count():
 		var collision = get_slide_collision(platforms)
 		if collision.get_collider().has_method("has_collided_with"):
 			collision.get_collider().has_collided_with(collision, self)
 			
-
 
 func _on_hurtbox_body_entered(body):
 	if body.is_in_group("enemies"):
@@ -78,10 +79,11 @@ func follow_camera(camera):
 
 func take_damage(knockback_force := Vector2.ZERO, duration := 0.25):
 	
-	if player_life > 0:
-		player_life -= 1
+	if Globals.player_life > 0:
+		Globals.player_life -= 1
 	else:
 		queue_free()
+		emit_signal("player_has_died")
 	if knockback_force != Vector2.ZERO:
 		knockback_vector = knockback_force
 		var knockback_tween = get_tree().create_tween()
