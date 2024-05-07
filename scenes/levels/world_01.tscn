@@ -632,7 +632,6 @@ offset_top = -20.0
 offset_right = 303.0
 offset_bottom = 7.0
 full_text = "Olá aventureiro, desejo boa sorte no inicio da sua jornada"
-full_array_text = Array[String](["\"Ola\"", "\"Tudo bem\""])
 
 [node name="base_patrol" parent="." instance=ExtResource("36_twf4e")]
 position = Vector2(702, 11)
@@ -640,8 +639,14 @@ position = Vector2(702, 11)
 [node name="cherry" parent="." instance=ExtResource("37_gthye")]
 position = Vector2(1236, 20)
 
-[node name="checkpoint" parent="." instance=ExtResource("38_wnwrv")]
+[node name="checkpoints" type="Node2D" parent="."]
 position = Vector2(468, 29)
+
+[node name="checkpoint" parent="checkpoints" instance=ExtResource("38_wnwrv")]
+position = Vector2(0, 0)
+
+[node name="checkpoint2" parent="checkpoints" instance=ExtResource("38_wnwrv")]
+position = Vector2(1154, 0)
 
 [connection signal="timeout" from="HUD/control/clock_timer" to="HUD/control" method="_on_clock_timer_timeout"]
 [connection signal="body_entered" from="spike_area" to="spike_area" method="_on_body_entered"]
