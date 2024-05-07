@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://dklbi1hf8be4k"]
+
+[ext_resource type="FontFile" uid="uid://bie1nalt6w36r" path="res://assets/Fonts/RevMiniPixel.ttf" id="1_5hc2l"]
+[ext_resource type="Script" path="res://scripts/dialog.gd" id="1_yhnja"]
+[ext_resource type="Texture2D" uid="uid://cgfakt81xt6od" path="res://assets/Mini FX, Items & UI/Mini UI/Dialog_Box(16 x 16).png" id="2_aymiv"]
+[ext_resource type="Texture2D" uid="uid://cxrqexta2d7d1" path="res://assets/Mini FX, Items & UI/Mini UI/Speech_Emotes (16 x 16).png" id="3_wtrti"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qgrp2"]
+size = Vector2(108, 64)
+
+[node name="Label" type="Label"]
+offset_right = 108.0
+offset_bottom = 27.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_outline_size = 4
+theme_override_fonts/font = ExtResource("1_5hc2l")
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+script = ExtResource("1_yhnja")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[node name="Area2D" type="Area2D" parent="."]
+position = Vector2(61, 17)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(-7, 15)
+shape = SubResource("RectangleShape2D_qgrp2")
+
+[node name="ballon_background" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(59, 11)
+scale = Vector2(8.375, 2.375)
+texture = ExtResource("2_aymiv")
+
+[node name="ballon_interact" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(53, 40)
+texture = ExtResource("3_wtrti")
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_exited" from="Area2D" to="." method="_on_area_2d_body_exited"]
