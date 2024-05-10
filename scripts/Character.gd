@@ -8,6 +8,9 @@ extends CharacterBody2D
 @onready var ray_right := $ray_right as RayCast2D
 @onready var ray_left := $ray_left as RayCast2D
 @onready var timer := $Timer as Timer
+@onready var jump_fx = $jump_fx as AudioStreamPlayer
+@onready var world_01 = $".."
+@onready var rigid_body_2d = $"../RigidBody2D"
 
 var MAX_SPEED: int = 200
 var IS_JUMPING: bool = false
@@ -16,9 +19,15 @@ var knockback_vector := Vector2.ZERO
 var is_hurted := false
 var direction
 
-signal player_has_died()
-
 func _physics_process(delta):
+	
+	if Input.is_key_pressed(KEY_L):
+		var mouseToObj = rigid_body_2d.get_local_mouse_position()
+		var mouseToPlayer = get_local_mouse_position()
+		print("mouse to player", mouseToPlayer)
+		print("mouse to obj", mouseToObj.y)
+		rigid_body_2d.apply_central_impulse(Vector2(mouseToObj.x, 0))
+	
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y += gravity * delta
@@ -30,6 +39,7 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
 		velocity.y = JUMP_FORCE
 		IS_JUMPING = true
+		jump_fx.play()
 	elif is_on_floor():
 		IS_JUMPING = false
 
@@ -47,7 +57,7 @@ func _physics_process(delta):
 	if knockback_vector != Vector2.ZERO:
 		velocity = knockback_vector
 
-	if Input.is_action_pressed("correr"):
+	if Input.is_action_pressed("correr") and Input.get_axis("ui_left", "ui_right") != 0:
 		SPEED = move_toward(SPEED, MAX_SPEED, int(SPEED * delta))
 		animation.speed_scale = 2
 	else:
@@ -78,12 +88,13 @@ func follow_camera(camera):
 	remote_transform.remote_path = camera_path
 
 func take_damage(knockback_force := Vector2.ZERO, duration := 0.25):
-	
+	print("Globals LIFE", Globals.player_life)
 	if Globals.player_life > 0:
 		Globals.player_life -= 1
 	else:
+		print("PLAYER MORREU TAKE_DAMAGE")
+		world_01.reload_game()
 		queue_free()
-		emit_signal("player_has_died")
 	if knockback_force != Vector2.ZERO:
 		knockback_vector = knockback_force
 		var knockback_tween = get_tree().create_tween()
@@ -116,9 +127,5 @@ func _on_head_collider_body_entered(body):
 		else:
 			body.create_coin()
 			body.animation_player.play("hit")
-
-
-
-
 
 

@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://biqx8ue2te7lb"]
+
+[ext_resource type="Texture2D" uid="uid://lpfgleryh8tl" path="res://assets/Mini FX, Items & UI/Food Items/Sushi_Variety (16 x 16).png" id="1_bwqiy"]
+[ext_resource type="Script" path="res://scripts/goal.gd" id="1_k4gkg"]
+
+[sub_resource type="Animation" id="Animation_a4ytr"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("texture:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, -5.5)]
+}
+
+[sub_resource type="Animation" id="Animation_3op2d"]
+resource_name = "float"
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("texture:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, -5.5), Vector2(0, -10)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4v0cj"]
+_data = {
+"RESET": SubResource("Animation_a4ytr"),
+"float": SubResource("Animation_3op2d")
+}
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_63j83"]
+
+[node name="goal" type="Area2D"]
+collision_layer = 2
+script = ExtResource("1_k4gkg")
+
+[node name="texture" type="Sprite2D" parent="."]
+position = Vector2(0, -5.5)
+texture = ExtResource("1_bwqiy")
+region_enabled = true
+region_rect = Rect2(48, 5, 16, 11)
+
+[node name="anim" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4v0cj")
+}
+autoplay = "float"
+
+[node name="collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, -5)
+shape = SubResource("CircleShape2D_63j83")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

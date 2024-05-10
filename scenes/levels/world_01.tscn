@@ -1,4 +1,4 @@
-[gd_scene load_steps=48 format=3 uid="uid://nv6yuj4b1vhf"]
+[gd_scene load_steps=58 format=3 uid="uid://nv6yuj4b1vhf"]
 
 [ext_resource type="Script" path="res://scripts/world_01.gd" id="1_dxmcr"]
 [ext_resource type="PackedScene" uid="uid://b0gi1no6nxsjr" path="res://prefabs/coin.tscn" id="1_j0k82"]
@@ -38,6 +38,13 @@
 [ext_resource type="PackedScene" uid="uid://dklbi1hf8be4k" path="res://prefabs/dialog.tscn" id="37_8euwu"]
 [ext_resource type="PackedScene" uid="uid://cnhom6dxwk3nh" path="res://actors/cherry.tscn" id="37_gthye"]
 [ext_resource type="PackedScene" uid="uid://dgqx03153mkjv" path="res://prefabs/checkpoint.tscn" id="38_wnwrv"]
+[ext_resource type="PackedScene" uid="uid://djfeyjp62jpx7" path="res://prefabs/pause_menu.tscn" id="39_gdt8y"]
+[ext_resource type="PackedScene" uid="uid://biqx8ue2te7lb" path="res://prefabs/goal.tscn" id="40_vvv7w"]
+[ext_resource type="Script" path="res://scripts/transition.gd" id="41_813q0"]
+[ext_resource type="Shader" path="res://shaders/transition.gdshader" id="41_gopqy"]
+[ext_resource type="Script" path="res://scripts/color_rect.gd" id="42_r08q5"]
+[ext_resource type="AudioStream" uid="uid://bayiicqti15xx" path="res://assets/sounds/themesong.wav" id="44_6y228"]
+[ext_resource type="Texture2D" uid="uid://csvi8sbrmfv2t" path="res://assets/Mini FX, Items & UI/Mini UI/Health_Indicator_Black_Outline (8 x 8).png" id="45_17e5e"]
 
 [sub_resource type="AnimatedTexture" id="AnimatedTexture_78by6"]
 frames = 4
@@ -283,6 +290,18 @@ shader_parameter/move_speed = 0.03
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_w3tna"]
 size = Vector2(173, 8)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oiqnw"]
+shader = ExtResource("41_gopqy")
+shader_parameter/lines = 10.0
+shader_parameter/threshold = 0.0
+shader_parameter/line_color_a = Color(1, 1, 1, 1)
+shader_parameter/line_color_b = Color(0, 0, 0, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ergyy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jony3"]
+size = Vector2(304, 46)
+
 [node name="World-01" type="Node2D"]
 script = ExtResource("1_dxmcr")
 
@@ -296,7 +315,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_wo566")
-default_minutes = 3
+default_seconds = 5
 
 [node name="clock_timer" type="Timer" parent="HUD/control"]
 autostart = true
@@ -321,15 +340,16 @@ size_flags_vertical = 0
 [node name="coins_icon" type="TextureRect" parent="HUD/control/container/coins_container"]
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 0
 texture = SubResource("AnimatedTexture_78by6")
+expand_mode = 2
 
 [node name="coins_counter" type="Label" parent="HUD/control/container/coins_container"]
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("30_v2gnh")
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 24
 text = "000000"
 vertical_alignment = 1
 
@@ -341,17 +361,17 @@ size_flags_vertical = 0
 [node name="score_label" type="Label" parent="HUD/control/container/score_container"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("30_v2gnh")
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 24
 text = "SCORE:"
 
 [node name="score_counter" type="Label" parent="HUD/control/container/score_container"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("30_v2gnh")
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 24
 text = "0000"
 vertical_alignment = 1
 
@@ -363,17 +383,17 @@ size_flags_vertical = 0
 [node name="timer_label" type="Label" parent="HUD/control/container/timer_container"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("30_v2gnh")
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 24
 text = "TIME"
 
 [node name="timer_counter" type="Label" parent="HUD/control/container/timer_container"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("30_v2gnh")
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 24
 text = "00:00"
 vertical_alignment = 1
 
@@ -385,8 +405,8 @@ size_flags_vertical = 8
 [node name="life_icon" type="TextureRect" parent="HUD/control/container/life_container"]
 layout_mode = 2
 size_flags_horizontal = 0
-size_flags_vertical = 0
 texture = ExtResource("7_nxen6")
+expand_mode = 2
 
 [node name="life_separator" type="Label" parent="HUD/control/container/life_container"]
 layout_mode = 2
@@ -400,9 +420,9 @@ vertical_alignment = 1
 [node name="life_counter" type="Label" parent="HUD/control/container/life_container"]
 layout_mode = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 4
+theme_override_constants/outline_size = 8
 theme_override_fonts/font = ExtResource("30_v2gnh")
-theme_override_font_sizes/font_size = 8
+theme_override_font_sizes/font_size = 24
 text = "03"
 vertical_alignment = 1
 
@@ -440,10 +460,6 @@ position = Vector2(481, -66)
 
 [node name="coin12" parent="coins" instance=ExtResource("1_j0k82")]
 position = Vector2(427, -66)
-
-[node name="moving_platform" parent="." instance=ExtResource("10_cwbl5")]
-position = Vector2(54, 34)
-move_horizontal = false
 
 [node name="TileMap" type="TileMap" parent="."]
 position = Vector2(96, -23)
@@ -514,6 +530,7 @@ centered = false
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(327, -69)
+zoom = Vector2(2, 2)
 limit_left = 0
 limit_smoothed = true
 position_smoothing_enabled = true
@@ -523,7 +540,7 @@ drag_right_margin = 0.0
 editor_draw_drag_margin = true
 
 [node name="Character" parent="." instance=ExtResource("3_krtr1")]
-position = Vector2(1091, 23)
+position = Vector2(1204, 24)
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -550,9 +567,6 @@ visibility_mode = 1
 
 [node name="broken_box" parent="." instance=ExtResource("20_55q3o")]
 position = Vector2(329, -9)
-
-[node name="falling_platform" parent="." instance=ExtResource("22_vd5nq")]
-position = Vector2(96, -96)
 
 [node name="warning_sign" type="Node2D" parent="."]
 position = Vector2(612, 26)
@@ -585,13 +599,7 @@ region_rect = Rect2(0, 8, 176, 8)
 [node name="collision" type="CollisionShape2D" parent="spike_area"]
 shape = SubResource("RectangleShape2D_w3tna")
 
-[node name="falling_platform2" parent="." instance=ExtResource("22_vd5nq")]
-position = Vector2(761, 25)
-
-[node name="falling_platform3" parent="." instance=ExtResource("22_vd5nq")]
-position = Vector2(644, 25)
-
-[node name="Enemies" type="Node" parent="."]
+[node name="Enemies" type="Node2D" parent="."]
 
 [node name="enemy" parent="Enemies" instance=ExtResource("12_l2d8o")]
 position = Vector2(344, 34)
@@ -618,26 +626,39 @@ position = Vector2(544, 12)
 wall_min_slide_angle = 1.69646
 enemy_point = 13232
 
-[node name="falling_platforms" type="Node" parent="."]
+[node name="base_patrol" parent="Enemies" instance=ExtResource("36_twf4e")]
+position = Vector2(702, 11)
 
-[node name="falling_platform4" parent="falling_platforms" instance=ExtResource("22_vd5nq")]
+[node name="cherry" parent="Enemies" instance=ExtResource("37_gthye")]
+position = Vector2(1236, 20)
+
+[node name="platforms" type="Node2D" parent="."]
+
+[node name="falling_platform4" parent="platforms" instance=ExtResource("22_vd5nq")]
 position = Vector2(1354, 56)
 
-[node name="falling_platform5" parent="falling_platforms" instance=ExtResource("22_vd5nq")]
+[node name="falling_platform5" parent="platforms" instance=ExtResource("22_vd5nq")]
 position = Vector2(1488, 56)
 
-[node name="Label" parent="." instance=ExtResource("37_8euwu")]
+[node name="falling_platform2" parent="platforms" instance=ExtResource("22_vd5nq")]
+position = Vector2(761, 25)
+
+[node name="falling_platform3" parent="platforms" instance=ExtResource("22_vd5nq")]
+position = Vector2(644, 25)
+
+[node name="moving_platform" parent="platforms" instance=ExtResource("10_cwbl5")]
+position = Vector2(54, 34)
+move_horizontal = false
+
+[node name="falling_platform" parent="platforms" instance=ExtResource("22_vd5nq")]
+position = Vector2(96, -96)
+
+[node name="DialogBox" parent="." instance=ExtResource("37_8euwu")]
 offset_left = 195.0
 offset_top = -20.0
 offset_right = 303.0
 offset_bottom = 7.0
 full_text = "Olá aventureiro, desejo boa sorte no inicio da sua jornada"
-
-[node name="base_patrol" parent="." instance=ExtResource("36_twf4e")]
-position = Vector2(702, 11)
-
-[node name="cherry" parent="." instance=ExtResource("37_gthye")]
-position = Vector2(1236, 20)
 
 [node name="checkpoints" type="Node2D" parent="."]
 position = Vector2(468, 29)
@@ -647,6 +668,61 @@ position = Vector2(0, 0)
 
 [node name="checkpoint2" parent="checkpoints" instance=ExtResource("38_wnwrv")]
 position = Vector2(1154, 0)
+
+[node name="pause_menu" parent="." instance=ExtResource("39_gdt8y")]
+
+[node name="goal" parent="." instance=ExtResource("40_vvv7w")]
+position = Vector2(1148, 28)
+next_level = "res://scenes/levels/world_02.tscn"
+
+[node name="transition" type="CanvasLayer" parent="."]
+script = ExtResource("41_813q0")
+
+[node name="color_rect" type="ColorRect" parent="transition"]
+material = SubResource("ShaderMaterial_oiqnw")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("42_r08q5")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("44_6y228")
+volume_db = -15.0
+autoplay = true
+
+[node name="initial_respawn" type="Marker2D" parent="."]
+position = Vector2(152, 24)
+
+[node name="RigidBody2D" type="RigidBody2D" parent="."]
+z_index = 5
+position = Vector2(1317, 17)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
+shape = SubResource("CircleShape2D_ergyy")
+
+[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
+position = Vector2(0, 1)
+texture = ExtResource("45_17e5e")
+region_enabled = true
+region_rect = Rect2(0.943863, 0.783314, 7.05614, 7.21669)
+
+[node name="GravityWater" type="Area2D" parent="."]
+position = Vector2(1406, 78)
+collision_layer = 3
+collision_mask = 3
+gravity_space_override = 1
+gravity_point_center = Vector2(0, -1.1)
+gravity_direction = Vector2(0, -1.1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GravityWater"]
+position = Vector2(25, 1)
+shape = SubResource("RectangleShape2D_jony3")
+debug_color = Color(0.88324, 0.0862687, 0.559208, 1)
 
 [connection signal="timeout" from="HUD/control/clock_timer" to="HUD/control" method="_on_clock_timer_timeout"]
 [connection signal="body_entered" from="spike_area" to="spike_area" method="_on_body_entered"]
