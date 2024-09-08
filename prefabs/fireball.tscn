@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://c7fyl1g1f8dqs"]
+
+[ext_resource type="Script" path="res://scripts/fireball.gd" id="1_aklbd"]
+[ext_resource type="Texture2D" uid="uid://c8b8rf04io6oh" path="res://assets/Sprite Pack 8/4 - Percy/Fireball_Projectile (16 x 16).png" id="1_vs1d7"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0rt5w"]
+atlas = ExtResource("1_vs1d7")
+region = Rect2(0, 0, 16, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s1yjv"]
+atlas = ExtResource("1_vs1d7")
+region = Rect2(16, 0, 16, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sugrw"]
+atlas = ExtResource("1_vs1d7")
+region = Rect2(32, 0, 16, 9)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_anami"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0rt5w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s1yjv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sugrw")
+}],
+"loop": true,
+"name": &"fireball",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dvtkw"]
+size = Vector2(14, 8)
+
+[node name="fireball" type="CharacterBody2D" groups=["fireball"]]
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("1_aklbd")
+
+[node name="anim" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_anami")
+animation = &"fireball"
+autoplay = "fireball"
+frame = 2
+frame_progress = 0.378922
+
+[node name="collision" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_dvtkw")

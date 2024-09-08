@@ -2,7 +2,8 @@ extends CharacterBody2D
 
 
 @export var SPEED: int = 100
-@export var JUMP_FORCE: float = -300.0
+#@export var JUMP_FORCE: float = -300.0
+@export var AIR_FRICTION := 0.5
 @onready var animation = $AnimatedSprite2D as AnimatedSprite2D
 @onready var remote_transform := $remote as RemoteTransform2D
 @onready var ray_right := $ray_right as RayCast2D
@@ -12,12 +13,25 @@ extends CharacterBody2D
 @onready var world_01 = $".."
 @onready var rigid_body_2d = $"../RigidBody2D"
 
+# Handle jump and gravity
+@export var jump_height := 64
+@export var max_time_to_peek := 0.5
+
+var jump_velocity
+var gravity = 1000
+var fall_gravity
+
+
 var MAX_SPEED: int = 200
 var IS_JUMPING: bool = false
-var gravity = 1000
 var knockback_vector := Vector2.ZERO
 var is_hurted := false
 var direction
+
+func _ready():
+	jump_velocity = (jump_height * 2) / max_time_to_peek
+	gravity = (jump_height * 2) / pow(max_time_to_peek, 2)
+	fall_gravity = gravity * 2
 
 func _physics_process(delta):
 	
@@ -30,14 +44,21 @@ func _physics_process(delta):
 	
 	# Add the gravity.
 	if not is_on_floor():
+		#velocity.y += gravity * delta
+		velocity.x = 0
+	
+	if velocity.y > 0 or not Input.is_action_pressed("ui_accept"):
+		velocity.y += fall_gravity * delta
+	else:
 		velocity.y += gravity * delta
+		
 
 	if IS_JUMPING:
 		animation.play("jump")
 
 	# Handle jump.
 	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
-		velocity.y = JUMP_FORCE
+		velocity.y = -jump_velocity
 		IS_JUMPING = true
 		jump_fx.play()
 	elif is_on_floor():
@@ -47,7 +68,7 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	direction = Input.get_axis("ui_left", "ui_right")
 	if direction:
-		velocity.x = direction * SPEED
+		velocity.x = lerp(velocity.x, direction * SPEED, AIR_FRICTION)
 		animation.scale.x = direction
 
 	else:
@@ -82,6 +103,12 @@ func _on_hurtbox_body_entered(body):
 			take_damage(Vector2(-200, -200))
 		if ray_left.is_colliding():
 			take_damage(Vector2(200, -200))
+	if body.is_in_group("fireball"):
+		if ray_right.is_colliding():
+			take_damage(Vector2(-200, -200))
+		if ray_left.is_colliding():
+			take_damage(Vector2(200, -200))
+		body.queue_free()
 
 func follow_camera(camera):
 	var camera_path = camera.get_path()

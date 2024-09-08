@@ -99,6 +99,7 @@ size = Vector2(12, 4.5)
 position = Vector2(319, -7)
 collision_mask = 94
 script = ExtResource("1_iunwg")
+AIR_FRICTION = 0.95
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -1)
@@ -124,13 +125,13 @@ debug_color = Color(0.68896, 1.12626e-05, 0.470315, 0.42)
 [node name="remote" type="RemoteTransform2D" parent="."]
 
 [node name="ray_right" type="RayCast2D" parent="."]
-position = Vector2(8, 3)
+position = Vector2(8, -4)
 target_position = Vector2(4, 0)
 collision_mask = 4
 hit_from_inside = true
 
 [node name="ray_left" type="RayCast2D" parent="."]
-position = Vector2(-8, 3)
+position = Vector2(-8, -4)
 target_position = Vector2(-4, 0)
 collision_mask = 4
 hit_from_inside = true
